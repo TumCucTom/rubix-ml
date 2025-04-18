@@ -1,0 +1,39 @@
+name: Build and Push Unity WebGL to Prod Branch
+
+on:
+  workflow_dispatch:
+
+jobs:
+  build:
+    name: Build and Deploy WebGL to prod
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Activate Unity License
+        uses: game-ci/unity-activate@v2
+        with:
+          unityVersion: 2019.3.0f6
+        env:
+          UNITY_LICENSE: ${{ secrets.UNITY_LICENSE }}
+
+      - name: Build WebGL
+        uses: game-ci/unity-builder@v3
+        with:
+          unityVersion: 2019.4.40f1
+          targetPlatform: WebGL
+        env:
+          UNITY_LICENSE: ${{ secrets.UNITY_LICENSE }}
+
+      - name: Commit WebGL build to prod branch
+        run: |
+          git config --global user.name "github-actions"
+          git config --global user.email "github-actions@github.com"
+          git checkout --orphan prod
+          git reset --hard
+          cp -r build/WebGL/WebGL/* .
+          git add .
+          git commit -m "Deploy WebGL build to prod branch"
+          git push --force origin prod
