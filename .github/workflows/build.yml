@@ -1,4 +1,3 @@
-# .github/workflows/deploy.yml
 name: Build and Deploy WebGL
 
 on:
@@ -7,24 +6,30 @@ on:
 
 jobs:
   buildAndDeploy:
-    name: Build and Deploy WebGL to GitHub Pages
     runs-on: ubuntu-latest
-
     steps:
       - name: Checkout repository
         uses: actions/checkout@v3
 
-      - name: Cache Unity packages
-        uses: actions/cache@v3
+      # 👇 Activate Unity License
+      - name: Activate Unity
+        uses: game-ci/unity-activate@v2
         with:
-          path: ~/.cache/unity
-          key: Library-${{ runner.os }}-${{ hashFiles('**/Packages/manifest.json') }}
+          unityVersion: 2022.3.0f1  # Replace with your actual Unity version
+        env:
+          UNITY_EMAIL: ${{ secrets.UNITY_EMAIL }}
+          UNITY_PASSWORD: ${{ secrets.UNITY_PASSWORD }}
 
+      # 👇 Build for WebGL
       - name: Build WebGL
         uses: game-ci/unity-builder@v3
         with:
           targetPlatform: WebGL
+        env:
+          UNITY_EMAIL: ${{ secrets.UNITY_EMAIL }}
+          UNITY_PASSWORD: ${{ secrets.UNITY_PASSWORD }}
 
+      # 👇 Deploy to GitHub Pages
       - name: Deploy to GitHub Pages
         uses: peaceiris/actions-gh-pages@v3
         with:
