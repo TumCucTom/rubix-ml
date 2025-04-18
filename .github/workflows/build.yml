@@ -16,7 +16,7 @@ jobs:
       - name: Activate Unity License
         uses: game-ci/unity-activate@v2
         with:
-          unityVersion: 2019.4.40f1
+          unityVersion: 2019.3.0f6
         env:
           UNITY_LICENSE: ${{ secrets.UNITY_LICENSE }}
 
