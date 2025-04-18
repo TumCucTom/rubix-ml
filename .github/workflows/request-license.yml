@@ -1,0 +1,14 @@
+# .github/workflows/request-license.yml
+name: Generate Unity Manual Activation File
+
+on:
+  workflow_dispatch:
+
+jobs:
+  requestManualActivation:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Request .alf file
+        uses: game-ci/unity-request-activation@v2
+        with:
+          unityVersion: 2019.4.40f1
