@@ -1,4 +1,4 @@
-name: Generate Unity Manual Activation File (No Actions)
+name: Generate Unity Manual Activation File (No Marketplace)
 
 on:
   workflow_dispatch:
@@ -6,29 +6,24 @@ on:
 jobs:
   generate-alf:
     runs-on: ubuntu-latest
-    steps:
-      - name: Pull Unity Docker image
-        run: docker pull unityci/editor:ubuntu-2019.4.40f1-base-0
 
-      - name: Generate .alf license file
+    steps:
+      - name: Pull correct Unity 2019 image
+        run: docker pull unityci/editor:2019.4.40f1-base-0
+
+      - name: Generate .alf file
         run: |
           docker run --rm \
             -v ${{ github.workspace }}:/project \
-            unityci/editor:ubuntu-2019.4.40f1-base-0 \
+            unityci/editor:2019.4.40f1-base-0 \
             unity-editor \
               -quit \
               -batchmode \
               -createManualActivationFile \
               -logFile /dev/stdout
-              
-          echo "::notice title=Download Manual Activation File::.alf file generated. You must now manually download it from the workflow run artifacts."
 
-      - name: List generated files
-        run: ls -lh
-
-      - name: Base64 encode .alf so you can copy/paste it from logs
+      - name: Print base64 of .alf to logs
         run: |
-          base64 Unity_v2019.x.alf > encoded_alf.txt
-          echo "::group::Base64-encoded .alf (copy this and decode it locally)"
-          cat encoded_alf.txt
+          echo "::group::Base64-encoded .alf (copy and decode locally)"
+          base64 Unity_v2019.x.alf
           echo "::endgroup::"
