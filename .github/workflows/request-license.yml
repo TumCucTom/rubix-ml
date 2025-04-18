@@ -23,7 +23,7 @@ jobs:
               -logFile /dev/stdout
 
       - name: Upload .alf file
-        uses: actions/upload-artifact@v3
+        uses: github.com/actions/upload-artifact@v3
         with:
           name: Unity_Activation_Request_File
           path: Unity_v2019.x.alf
