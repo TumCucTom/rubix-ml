@@ -1,20 +1,29 @@
-# .github/workflows/request-license.yml
-name: Request Unity Manual Activation File
+name: Generate Unity Manual Activation File
 
 on:
   workflow_dispatch:
 
 jobs:
-  requestManualActivation:
+  generate-alf:
     runs-on: ubuntu-latest
     steps:
-      - name: Generate Unity Activation File (.alf)
-        uses: game-ci/unity-request-activation@main
-        with:
-          unityVersion: 2019.4.40f1
+      - name: Download Unity 2019.4.40f1 Editor Docker image
+        run: |
+          docker pull unityci/editor:ubuntu-2019.4.40f1-base-0
 
-      - name: Upload .alf File
+      - name: Generate .alf activation request file
+        run: |
+          docker run --rm \
+            -v ${{ github.workspace }}:/project \
+            unityci/editor:ubuntu-2019.4.40f1-base-0 \
+            unity-editor \
+              -quit \
+              -batchmode \
+              -createManualActivationFile \
+              -logFile /dev/stdout
+
+      - name: Upload .alf file
         uses: actions/upload-artifact@v3
         with:
-          name: Unity_Activation_File
+          name: Unity_Activation_Request_File
           path: Unity_v2019.x.alf
