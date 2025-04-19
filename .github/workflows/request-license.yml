@@ -10,7 +10,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Request activation file
-        uses: game-ci/unity-request-activation@v2
+        uses: game-ci/unity-request-activation@v1
         with:
           unityVersion: 2019.3.0f6
 
