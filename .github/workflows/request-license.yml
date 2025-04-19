@@ -13,9 +13,3 @@ jobs:
         uses: game-ci/unity-return-license@v2
         with:
           unityVersion: 2019.3.0f6
-
-      - name: Upload .alf file as artifact
-        uses: actions/upload-artifact@v3
-        with:
-          name: UnityActivationFile
-          path: unity_v2019.x.alf
