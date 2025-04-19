@@ -2,14 +2,21 @@ name: Request Unity Manual Activation
 
 on:
   workflow_dispatch:
-  push:
-    paths: [.github/workflows]
 
 jobs:
   requestManualActivation:
     runs-on: ubuntu-latest
     steps:
+      - name: Checkout repo (not needed for action itself)
+        uses: actions/checkout@v3
+
       - name: Request activation file
-        uses: game-ci/unity-return-license@v2
+        uses: game-ci/unity-request-activation@a0b7768c406728b55e8606f024fc165c31fba617 # Known working commit
         with:
           unityVersion: 2019.3.0f6
+
+      - name: Upload .alf file as artifact
+        uses: actions/upload-artifact@v3
+        with:
+          name: UnityActivationFile
+          path: unity_v2019.x.alf
