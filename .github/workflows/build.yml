@@ -26,6 +26,7 @@ jobs:
         with:
           unityVersion: 2019.3.0f6
           targetPlatform: WebGL
+          versioning: None
         env:
           UNITY_SERIAL: ${{ secrets.UNITY_SERIAL }}
           UNITY_EMAIL: ${{ secrets.UNITY_EMAIL }}
