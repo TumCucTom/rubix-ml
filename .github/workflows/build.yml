@@ -12,12 +12,14 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v3
 
-      - name: Activate Unity License
+      - name: Activate Unity License (Pro)
         uses: game-ci/unity-activate@v2
         with:
           unityVersion: 2019.3.0f6
         env:
-          UNITY_LICENSE: ${{ secrets.UNITY_LICENSE }}
+          UNITY_SERIAL: ${{ secrets.UNITY_SERIAL }}
+          UNITY_EMAIL: ${{ secrets.UNITY_EMAIL }}
+          UNITY_PASSWORD: ${{ secrets.UNITY_PASSWORD }}
 
       - name: Build WebGL
         uses: game-ci/unity-builder@v3
@@ -25,7 +27,9 @@ jobs:
           unityVersion: 2019.3.0f6
           targetPlatform: WebGL
         env:
-          UNITY_LICENSE: ${{ secrets.UNITY_LICENSE }}
+          UNITY_SERIAL: ${{ secrets.UNITY_SERIAL }}
+          UNITY_EMAIL: ${{ secrets.UNITY_EMAIL }}
+          UNITY_PASSWORD: ${{ secrets.UNITY_PASSWORD }}
 
       - name: Commit WebGL build to prod branch
         run: |
